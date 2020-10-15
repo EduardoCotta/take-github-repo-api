@@ -9,7 +9,7 @@ namespace TakeGithubAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GithubRepositoryController : ControllerBase
+    public class GithubRepoController : ControllerBase
     {
         // GET: api/<GithubRepositoryController>
         [HttpGet]
