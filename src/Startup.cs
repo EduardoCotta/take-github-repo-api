@@ -7,17 +7,18 @@ using TakeGithubAPI.Models.Repository;
 using TakeGithubAPI.Models.Service;
 using TakeGithubAPI.Repository;
 using TakeGithubAPI.Service;
+using TakeGithubAPI.Utils;
 
 namespace TakeGithubAPI
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; private set; }
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -25,6 +26,7 @@ namespace TakeGithubAPI
             services.AddControllers();
             services.AddScoped<IGithubRepoService, GithubRepoService>();
             services.AddScoped<IGithubRepoRepository, GithubRepoRepository>();
+            services.AddScoped<IApplicationEnviroment, ApplicationEnviroment>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
