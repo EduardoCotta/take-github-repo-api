@@ -50,7 +50,7 @@ namespace TakeGithubAPI.Service
                 throw new ArgumentException("O nome da organização não pode ser nulo.");
             }
 
-            if (numberOfRepositories == 0)
+            if (numberOfRepositories == default(int))
             {
                 throw new ArgumentException("O número de repositório não pode ser igual a 0.");
             }

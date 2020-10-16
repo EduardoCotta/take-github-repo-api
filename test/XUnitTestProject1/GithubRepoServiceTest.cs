@@ -51,7 +51,7 @@ namespace TakeGithubAPITest
         public void GetAllRepositoriesOfTake_ThrowsArgumentExceptionAsync()
         {
             #region .: Arrange :.
-            const string organizationName = "";
+            string organizationName = string.Empty;
             var githubRepos = GithubReposBuilder();
             _githubRepoRepository.Setup(x => x.GetAllGithubRepositoriesByOrganizationNameAsync(organizationName)).ReturnsAsync(githubRepos);
             #endregion
@@ -97,9 +97,9 @@ namespace TakeGithubAPITest
         public void GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization_ThrowsArgumentException()
         {
             #region .: Arrange :.
-            const string organizationName = "";
+            string organizationName = string.Empty;
             const Language language = Language.CSharp;
-            const int numberOfRepositories = 0;
+            int numberOfRepositories = default(int);
             var githubRepos = GithubReposBuilder();
             _githubRepoRepository.Setup(x => x.GetAllGithubRepositoriesByOrganizationNameAsync(organizationName)).ReturnsAsync(githubRepos);
             #endregion
