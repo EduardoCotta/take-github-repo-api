@@ -2,6 +2,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TakeGithubAPI.DTO;
 using TakeGithubAPI.Enums;
 using TakeGithubAPI.Models;
@@ -26,47 +27,47 @@ namespace TakeGithubAPITest
 
         #region.: Tests :.
         [Fact]
-        public void GetAllRepositoriesOfTake_Success()
+        public async void GetAllRepositoriesOfTake_Success()
         {
             #region .: Arrange :.
             const string organizationName = "takenet";
             var githubRepos = GithubReposBuilder();
             var expectedGithubRepos = GithubReposDTOBuilder();
-            _githubRepoRepository.Setup(x => x.GetAllGithubRepositoriesByOrganizationName(organizationName)).Returns(githubRepos);
+            _githubRepoRepository.Setup(x => x.GetAllGithubRepositoriesByOrganizationNameAsync(organizationName)).ReturnsAsync(githubRepos);
             #endregion
 
             #region .: Act :.
-            var result = _githubRepoService.GetAllGithubRepositoriesByOrganization(organizationName);
+            var result = await _githubRepoService.GetAllGithubRepositoriesByOrganization(organizationName);
             #endregion
             #region .: Assert :.
-            Assert.All(result, item => Assert.Contains(organizationName, item.Name));
-            Assert.IsType<List<GithubRepoDTO>>(result);
+            Assert.All(result, item => Assert.Contains(organizationName, item.Owner.Name));
+            Assert.IsAssignableFrom<IEnumerable<GithubRepoDTO>>(result);
             #endregion
 
         }
 
 
         [Fact]
-        public void GetAllRepositoriesOfTake_ThrowsArgumentException()
+        public async Task GetAllRepositoriesOfTake_ThrowsArgumentExceptionAsync()
         {
             #region .: Arrange :.
             const string organizationName = "";
             var githubRepos = GithubReposBuilder();
-            _githubRepoRepository.Setup(x => x.GetAllGithubRepositoriesByOrganizationName(organizationName)).Returns(githubRepos);
+            _githubRepoRepository.Setup(x => x.GetAllGithubRepositoriesByOrganizationNameAsync(organizationName)).ReturnsAsync(githubRepos);
             #endregion
 
             #region .: Act :.
-            Action act = () =>  _githubRepoService.GetAllGithubRepositoriesByOrganization(organizationName);
+            Task result() => _githubRepoService.GetAllGithubRepositoriesByOrganization(organizationName);
             #endregion
             #region .: Assert :.
-            
-            Assert.Throws<ArgumentException>(act);
+
+            await Assert.ThrowsAsync<ArgumentException>(result);
             #endregion
 
         }
 
         [Fact]
-        public void GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization_Success()
+        public async void GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization_Success()
         {
             #region .: Arrange :.
             const string organizationName = "takenet";
@@ -75,18 +76,18 @@ namespace TakeGithubAPITest
             var githubRepos = GithubReposBuilder();
             var expectedGithubRepos = GithubReposDTOFilteredBuilder();
 
-            _githubRepoRepository.Setup(x => x.GetAllGithubRepositoriesByOrganizationName(organizationName)).Returns(githubRepos);
+            _githubRepoRepository.Setup(x => x.GetAllGithubRepositoriesByOrganizationNameAsync(organizationName)).ReturnsAsync(githubRepos);
             #endregion
 
             #region .: Act :.
-            var result = _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization(organizationName, language, numberOfRepositories);
+            var result = await _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization(organizationName, language, numberOfRepositories);
             #endregion
             #region .: Assert :.
 
-            Assert.All(result, item => Assert.Contains(organizationName, item.Name));
-            Assert.Equal(result.ElementAt(0).Name, expectedGithubRepos.ElementAt(0).Name);
-            Assert.Equal(result.ElementAt(1).Name, expectedGithubRepos.ElementAt(1).Name);
-            Assert.IsType<List<GithubRepoDTO>>(result);
+            Assert.All(result, item => Assert.Contains(organizationName, item.Owner.Name));
+            Assert.Equal(expectedGithubRepos.ElementAt(0).Name, result.ElementAt(0).Name);
+            Assert.Equal(expectedGithubRepos.ElementAt(1).Name, result.ElementAt(1).Name);
+            Assert.IsAssignableFrom<IEnumerable<GithubRepoDTO>>(result);
             #endregion
 
         }
@@ -100,15 +101,15 @@ namespace TakeGithubAPITest
             const Language language = Language.CSharp;
             const int numberOfRepositories = 0;
             var githubRepos = GithubReposBuilder();
-            _githubRepoRepository.Setup(x => x.GetAllGithubRepositoriesByOrganizationName(organizationName)).Returns(githubRepos);
+            _githubRepoRepository.Setup(x => x.GetAllGithubRepositoriesByOrganizationNameAsync(organizationName)).ReturnsAsync(githubRepos);
             #endregion
 
             #region .: Act :.
-            Action act = () => _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization(organizationName, language, numberOfRepositories);
+            Task result () => _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization(organizationName, language, numberOfRepositories);
             #endregion
             #region .: Assert :.
 
-            Assert.Throws<ArgumentException>(act);
+            Assert.ThrowsAsync<ArgumentException>(result);
             #endregion
 
         }
@@ -123,16 +124,16 @@ namespace TakeGithubAPITest
                 new GithubRepo
                 {
                     Owner = TakeOwnerBuilder(),
-                    Name = "Rep1",
+                    Name = "Rep2",
                     LanguageName = "C#",
-                    CreationDate = DateTime.Now.AddDays(-4)
+                    CreationDate = DateTime.Now.AddDays(-3)
                 },
                 new GithubRepo
                 {
                     Owner = TakeOwnerBuilder(),
-                    Name = "Rep2",
+                    Name = "Rep1",
                     LanguageName = "C#",
-                    CreationDate = DateTime.Now.AddDays(-3)
+                    CreationDate = DateTime.Now.AddDays(-4)
                 },
                 new GithubRepo
                 {
@@ -162,22 +163,22 @@ namespace TakeGithubAPITest
             {
                 new GithubRepoDTO
                 {
-                    Owner = TakeOwnerBuilder(),
+                    Owner = new OwnerDTO(TakeOwnerBuilder()),
                     Name = "Rep1"
                 },
                 new GithubRepoDTO
                 {
-                    Owner = TakeOwnerBuilder(),
+                    Owner = new OwnerDTO(TakeOwnerBuilder()),
                     Name = "Rep2"
                 },
                 new GithubRepoDTO
                 {
-                    Owner = TakeOwnerBuilder(),
+                    Owner = new OwnerDTO(TakeOwnerBuilder()),
                     Name = "Rep3"
                 },
                 new GithubRepoDTO
                 {
-                    Owner = TakeOwnerBuilder(),
+                    Owner = new OwnerDTO(TakeOwnerBuilder()),
                     Name = "Rep4"
                 },
             };
@@ -190,12 +191,12 @@ namespace TakeGithubAPITest
             {
                 new GithubRepoDTO
                 {
-                    Owner = TakeOwnerBuilder(),
+                    Owner = new OwnerDTO(TakeOwnerBuilder()),
                     Name = "Rep1"
                 },
                 new GithubRepoDTO
                 {
-                    Owner = TakeOwnerBuilder(),
+                    Owner = new OwnerDTO(TakeOwnerBuilder()),
                     Name = "Rep2"
                 },
             };
@@ -204,7 +205,7 @@ namespace TakeGithubAPITest
         {
             return new Owner
             {
-                Name = "takenet",
+                Login = "takenet",
                 AvatarURL = "url_teste.com"
             };
         }
@@ -212,7 +213,7 @@ namespace TakeGithubAPITest
         {
             return new Owner
             {
-                Name = "other_company",
+                Login = "other_company",
                 AvatarURL = "url_teste1.com"
             };
         }
