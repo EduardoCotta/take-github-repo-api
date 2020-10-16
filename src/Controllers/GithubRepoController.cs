@@ -1,28 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
+using TakeGithubAPI.Enums;
+using TakeGithubAPI.Models.Service;
 
 namespace TakeGithubAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/githubrepo")]
     [ApiController]
     public class GithubRepoController : ControllerBase
     {
-        // GET: api/<GithubRepositoryController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IGithubRepoService _githubRepoService;
+        public GithubRepoController(IGithubRepoService githubRepoService)
         {
-            return new string[] { "value1", "value2" };
+            _githubRepoService = githubRepoService;
+        }
+        [HttpGet]
+        [Route("{organizationName}/all")]
+        public async Task<IActionResult> GetAsync(string organizationName)
+        {
+            try
+            {
+                var githubRepos = await _githubRepoService.GetAllGithubRepositoriesByOrganization(organizationName);
+                return Ok(githubRepos);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
+            
         }
 
-        // GET api/<GithubRepositoryController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        [Route("{organizationName}/{numberOfRepositories}")]
+        public async Task<IActionResult> GetNFirstCreatedGithubRepositoriesByOrganizationMadeInCSharp(string organizationName, int numberOfRepositories)
         {
-            return "value";
+            try
+            {
+                var githubRepos = await _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization(organizationName, Language.CSharp, numberOfRepositories);
+                return Ok(githubRepos);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }
