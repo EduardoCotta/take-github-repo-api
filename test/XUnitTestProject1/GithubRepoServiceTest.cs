@@ -27,7 +27,7 @@ namespace TakeGithubAPITest
 
         #region.: Tests :.
         [Fact]
-        public async void GetAllRepositoriesOfTake_Success()
+        public async Task GetAllRepositoriesOfTake_Success()
         {
             #region .: Arrange :.
             const string organizationName = "takenet";
@@ -48,7 +48,7 @@ namespace TakeGithubAPITest
 
 
         [Fact]
-        public async Task GetAllRepositoriesOfTake_ThrowsArgumentExceptionAsync()
+        public void GetAllRepositoriesOfTake_ThrowsArgumentExceptionAsync()
         {
             #region .: Arrange :.
             const string organizationName = "";
@@ -61,13 +61,13 @@ namespace TakeGithubAPITest
             #endregion
             #region .: Assert :.
 
-            await Assert.ThrowsAsync<ArgumentException>(result);
+            Assert.ThrowsAsync<ArgumentException>(result);
             #endregion
 
         }
 
         [Fact]
-        public async void GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization_Success()
+        public async Task GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization_Success()
         {
             #region .: Arrange :.
             const string organizationName = "takenet";
