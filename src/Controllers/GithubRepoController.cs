@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TakeGithubAPI.Enums;
+using TakeGithubAPI.Enums.Util;
 using TakeGithubAPI.Models.Service;
 
 namespace TakeGithubAPI.Controllers
@@ -17,11 +18,12 @@ namespace TakeGithubAPI.Controllers
         }
         [HttpGet]
         [Route("{organizationName}")]
-        public async Task<IActionResult> GetAsync(string organizationName)
+        public async Task<IActionResult> GetAsync(string organizationName, [FromQuery] int amount = 500, string languageName = "")
         {
             try
             {
-                var githubRepos = await _githubRepoService.GetAllGithubRepositoriesByOrganizationAsync(organizationName);
+                Language language = EnumParser.ParseOrDefault<Language>(languageName);
+                var githubRepos = await _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganizationAsync(organizationName, language, amount);
                 return Ok(githubRepos);
             }
             catch(ArgumentException ex)
@@ -29,21 +31,6 @@ namespace TakeGithubAPI.Controllers
                 return BadRequest(ex);
             }
             
-        }
-
-        [HttpGet]
-        [Route("{organizationName}")]
-        public async Task<IActionResult> GetNFirstCreatedGithubRepositoriesByOrganizationMadeInCSharp(string organizationName, [FromQuery] int amount)
-        {
-            try
-            {
-                var githubRepos = await _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganizationAsync(organizationName, Language.CSharp, amount);
-                return Ok(githubRepos);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex);
-            }
         }
     }
 }
