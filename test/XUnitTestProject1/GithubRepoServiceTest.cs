@@ -15,6 +15,7 @@ namespace TakeGithubAPITest
 {
     public class GithubRepoServiceTest
     {
+        private const string ORGANIZATION_NAME = "takenet";
         private readonly IGithubRepoService _githubRepoService;
         private readonly Mock<IGithubRepoRepository> _githubRepoRepository = new Mock<IGithubRepoRepository>();
 
@@ -30,9 +31,8 @@ namespace TakeGithubAPITest
         public async Task GetAllRepositoriesOfTake_Success()
         {
             #region .: Arrange :.
-            const string organizationName = "takenet";
+            const string organizationName = ORGANIZATION_NAME;
             var githubRepos = GithubReposBuilder();
-            var expectedGithubRepos = GithubReposDTOBuilder();
             _githubRepoRepository.Setup(x => x.GetAllGithubRepositoriesByOrganizationNameAsync(organizationName)).ReturnsAsync(githubRepos);
             #endregion
 
@@ -70,7 +70,7 @@ namespace TakeGithubAPITest
         public async Task GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization_Success()
         {
             #region .: Arrange :.
-            const string organizationName = "takenet";
+            const string organizationName = ORGANIZATION_NAME;
             const Language language = Language.CSharp;
             const int numberOfRepositories = 2;
             var githubRepos = GithubReposBuilder();
@@ -205,7 +205,7 @@ namespace TakeGithubAPITest
         {
             return new Owner
             {
-                Login = "takenet",
+                Login = ORGANIZATION_NAME,
                 AvatarURL = "url_teste.com"
             };
         }
