@@ -7,6 +7,6 @@ namespace TakeGithubAPI.Models.Repository
 {
     public interface IGithubRepoRepository
     {
-        IEnumerable<GithubRepo> GetAllGithubRepositoriesByOrganizationName(string organizationName);
+        Task<IEnumerable<GithubRepo>> GetAllGithubRepositoriesByOrganizationNameAsync(string organizationName);
     }
 }
