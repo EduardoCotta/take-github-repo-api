@@ -9,21 +9,23 @@ namespace TakeGithubAPI.Enums
     public enum Language
     {
         [Description("C#")]
-        CSharp = 0,
+        CSharp,
         [Description("Java")]
-        Java = 1,
+        Java,
         [Description("Javascript")]
-        Javascript = 2,
+        Javascript,
         [Description("TypeScript")]
-        TypeScript = 3,
+        TypeScript,
         [Description("Shell")]
-        Shell = 4,
+        Shell,
         [Description("PHP")]
-        PHP = 5,
+        PHP,
         [Description("CSS")]
-        CSS = 6,
+        CSS,
         [Description("HTML")]
-        HTML = 7,
+        HTML,
+        [Description(".*")]
+        AnyLanguage
 
     }
 }
