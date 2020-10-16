@@ -34,13 +34,20 @@ namespace TakeGithubAPI.Service
 
             var result = await _githubRepoRepository.GetAllGithubRepositoriesByOrganizationNameAsync(organizationName);
 
+            Func<Models.GithubRepo, bool> filterByRepositoryLanguage = FilterRepositoryLanguage(language);
             return
                 result
                 .Where(repo => !string.IsNullOrEmpty(repo.LanguageName))
-                .Where(repo => repo.LanguageType == language)
+                .Where(filterByRepositoryLanguage)
                 .OrderBy(repo => repo.CreationDate)
                 .Take(numberOfRepositories)
                 .Select(repo => new GithubRepoDTO(repo));
+
+            
+        }
+        private Func<Models.GithubRepo, bool> FilterRepositoryLanguage(Language language)
+        {
+            return repo => repo.LanguageType == language || language == Language.AnyLanguage;
         }
 
         public void VerifyRequest(string organizationName, int numberOfRepositories)
