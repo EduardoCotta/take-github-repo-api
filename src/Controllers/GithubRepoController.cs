@@ -6,7 +6,7 @@ using TakeGithubAPI.Models.Service;
 
 namespace TakeGithubAPI.Controllers
 {
-    [Route("api/githubrepo")]
+    [Route("api/[controller]")]
     [ApiController]
     public class GithubRepoController : ControllerBase
     {
@@ -16,33 +16,33 @@ namespace TakeGithubAPI.Controllers
             _githubRepoService = githubRepoService;
         }
         [HttpGet]
-        [Route("{organizationName}/all")]
+        [Route("{organizationName}")]
         public async Task<IActionResult> GetAsync(string organizationName)
         {
             try
             {
-                var githubRepos = await _githubRepoService.GetAllGithubRepositoriesByOrganization(organizationName);
+                var githubRepos = await _githubRepoService.GetAllGithubRepositoriesByOrganizationAsync(organizationName);
                 return Ok(githubRepos);
             }
-            catch(Exception ex)
+            catch(ArgumentException ex)
             {
-                return BadRequest();
+                return BadRequest(ex);
             }
             
         }
 
         [HttpGet]
-        [Route("{organizationName}/{numberOfRepositories}")]
-        public async Task<IActionResult> GetNFirstCreatedGithubRepositoriesByOrganizationMadeInCSharp(string organizationName, int numberOfRepositories)
+        [Route("{organizationName}")]
+        public async Task<IActionResult> GetNFirstCreatedGithubRepositoriesByOrganizationMadeInCSharp(string organizationName, [FromQuery] int amount)
         {
             try
             {
-                var githubRepos = await _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization(organizationName, Language.CSharp, numberOfRepositories);
+                var githubRepos = await _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganizationAsync(organizationName, Language.CSharp, amount);
                 return Ok(githubRepos);
             }
-            catch
+            catch (ArgumentException ex)
             {
-                return BadRequest();
+                return BadRequest(ex);
             }
         }
     }
