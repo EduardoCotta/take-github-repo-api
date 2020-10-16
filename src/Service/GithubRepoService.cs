@@ -16,9 +16,9 @@ namespace TakeGithubAPI.Service
         {
             _githubRepoRepository = githubRepoRepository;
         }
-        async Task<IEnumerable<GithubRepoDTO>> IGithubRepoService.GetAllGithubRepositoriesByOrganization(string organizationName)
+        async Task<IEnumerable<GithubRepoDTO>> IGithubRepoService.GetAllGithubRepositoriesByOrganizationAsync(string organizationName)
         {
-            if (string.IsNullOrEmpty(organizationName))
+            if (string.IsNullOrWhiteSpace(organizationName))
             {
                 throw new ArgumentException("O nome da organização não pode ser nulo.");
             }
@@ -28,7 +28,7 @@ namespace TakeGithubAPI.Service
             return githubRepos.Select(repo => new GithubRepoDTO(repo));
         }
 
-        async Task<IEnumerable<GithubRepoDTO>> IGithubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization(string organizationName, Language language, int numberOfRepositories)
+        async Task<IEnumerable<GithubRepoDTO>> IGithubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganizationAsync(string organizationName, Language language, int numberOfRepositories)
         {
             verifyRequest(organizationName, numberOfRepositories);
 
@@ -45,7 +45,7 @@ namespace TakeGithubAPI.Service
 
         public void verifyRequest(string organizationName, int numberOfRepositories)
         {
-            if (string.IsNullOrEmpty(organizationName))
+            if (string.IsNullOrWhiteSpace(organizationName))
             {
                 throw new ArgumentException("O nome da organização não pode ser nulo.");
             }
