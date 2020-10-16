@@ -14,5 +14,16 @@ namespace TakeGithubAPI.Enums
         Java = 1,
         [Description("Javascript")]
         Javascript = 2,
+        [Description("TypeScript")]
+        TypeScript = 3,
+        [Description("Shell")]
+        Shell = 4,
+        [Description("PHP")]
+        PHP = 5,
+        [Description("CSS")]
+        CSS = 6,
+        [Description("HTML")]
+        HTML = 7,
+
     }
 }
