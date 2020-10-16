@@ -16,14 +16,44 @@ namespace TakeGithubAPI.Service
         {
             _githubRepoRepository = githubRepoRepository;
         }
-        List<GithubRepoDTO> IGithubRepoService.GetAllGithubRepositoriesByOrganization(string organizationName)
+        async Task<IEnumerable<GithubRepoDTO>> IGithubRepoService.GetAllGithubRepositoriesByOrganization(string organizationName)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(organizationName))
+            {
+                throw new ArgumentException("O nome da organização não pode ser nulo.");
+            }
+
+            var githubRepos = await _githubRepoRepository.GetAllGithubRepositoriesByOrganizationNameAsync(organizationName);
+                
+            return githubRepos.Select(repo => new GithubRepoDTO(repo));
         }
 
-        List<GithubRepoDTO> IGithubRepoService.GetNGithubRepositoriesByLanguageAndOrganization(string organizationName, Language language, int numberOfRepositories)
+        async Task<IEnumerable<GithubRepoDTO>> IGithubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization(string organizationName, Language language, int numberOfRepositories)
         {
-            throw new NotImplementedException();
+            verifyRequest(organizationName, numberOfRepositories);
+
+            var result = await _githubRepoRepository.GetAllGithubRepositoriesByOrganizationNameAsync(organizationName);
+
+            return
+                result
+                .Where(repo => !string.IsNullOrEmpty(repo.LanguageName))
+                .Where(repo => repo.LanguageType == language)
+                .OrderBy(repo => repo.CreationDate)
+                .Take(numberOfRepositories)
+                .Select(repo => new GithubRepoDTO(repo));
+        }
+
+        public void verifyRequest(string organizationName, int numberOfRepositories)
+        {
+            if (string.IsNullOrEmpty(organizationName))
+            {
+                throw new ArgumentException("O nome da organização não pode ser nulo.");
+            }
+
+            if (numberOfRepositories == 0)
+            {
+                throw new ArgumentException("O número de repositório não pode ser igual a 0.");
+            }
         }
     }
 }
