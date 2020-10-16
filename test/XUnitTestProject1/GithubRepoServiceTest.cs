@@ -37,7 +37,7 @@ namespace TakeGithubAPITest
             #endregion
 
             #region .: Act :.
-            var result = await _githubRepoService.GetAllGithubRepositoriesByOrganization(organizationName);
+            var result = await _githubRepoService.GetAllGithubRepositoriesByOrganizationAsync(organizationName);
             #endregion
             #region .: Assert :.
             Assert.All(result, item => Assert.Contains(organizationName, item.Owner.Name));
@@ -57,7 +57,7 @@ namespace TakeGithubAPITest
             #endregion
 
             #region .: Act :.
-            Task result() => _githubRepoService.GetAllGithubRepositoriesByOrganization(organizationName);
+            Task result() => _githubRepoService.GetAllGithubRepositoriesByOrganizationAsync(organizationName);
             #endregion
             #region .: Assert :.
 
@@ -80,7 +80,7 @@ namespace TakeGithubAPITest
             #endregion
 
             #region .: Act :.
-            var result = await _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization(organizationName, language, numberOfRepositories);
+            var result = await _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganizationAsync(organizationName, language, numberOfRepositories);
             #endregion
             #region .: Assert :.
 
@@ -105,7 +105,7 @@ namespace TakeGithubAPITest
             #endregion
 
             #region .: Act :.
-            Task result () => _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganization(organizationName, language, numberOfRepositories);
+            Task result () => _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganizationAsync(organizationName, language, numberOfRepositories);
             #endregion
             #region .: Assert :.
 
