@@ -30,7 +30,7 @@ namespace TakeGithubAPI.Service
 
         async Task<IEnumerable<GithubRepoDTO>> IGithubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganizationAsync(string organizationName, Language language, int numberOfRepositories)
         {
-            verifyRequest(organizationName, numberOfRepositories);
+            VerifyRequest(organizationName, numberOfRepositories);
 
             var result = await _githubRepoRepository.GetAllGithubRepositoriesByOrganizationNameAsync(organizationName);
 
@@ -43,7 +43,7 @@ namespace TakeGithubAPI.Service
                 .Select(repo => new GithubRepoDTO(repo));
         }
 
-        public void verifyRequest(string organizationName, int numberOfRepositories)
+        public void VerifyRequest(string organizationName, int numberOfRepositories)
         {
             if (string.IsNullOrWhiteSpace(organizationName))
             {
