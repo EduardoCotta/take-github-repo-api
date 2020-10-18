@@ -23,7 +23,7 @@ namespace TakeGithubAPI.Controllers
             try
             {
                 Language language = EnumParser.ParseOrDefault<Language>(languageName);
-                var githubRepos = await _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganizationAsync(organizationName, language, amount);
+                var githubRepos = await _githubRepoService.GetGithubRepositoriesByOrganizationFilteredOrderedByFirstCreatedAsync(organizationName, language, amount);
                 return Ok(githubRepos);
             }
             catch(ArgumentException ex)

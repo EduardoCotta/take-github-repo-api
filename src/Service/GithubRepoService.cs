@@ -28,7 +28,7 @@ namespace TakeGithubAPI.Service
             return githubRepos.Select(repo => new GithubRepoDTO(repo));
         }
 
-        async Task<IEnumerable<GithubRepoDTO>> IGithubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganizationAsync(string organizationName, Language language, int numberOfRepositories)
+        async Task<IEnumerable<GithubRepoDTO>> IGithubRepoService.GetGithubRepositoriesByOrganizationFilteredOrderedByFirstCreatedAsync(string organizationName, Language language, int numberOfRepositories)
         {
             VerifyRequest(organizationName, numberOfRepositories);
 

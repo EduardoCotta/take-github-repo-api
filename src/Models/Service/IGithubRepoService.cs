@@ -10,6 +10,6 @@ namespace TakeGithubAPI.Models.Service
     public interface IGithubRepoService
     {
         Task<IEnumerable<GithubRepoDTO>> GetAllGithubRepositoriesByOrganizationAsync(string organizationName);
-        Task<IEnumerable<GithubRepoDTO>> GetNFirstCreatedGithubRepositoriesByLanguageAndOrganizationAsync(string organizationName, Language language, int numberOfRepositories);
+        Task<IEnumerable<GithubRepoDTO>> GetGithubRepositoriesByOrganizationFilteredOrderedByFirstCreatedAsync(string organizationName, Language language, int numberOfRepositories);
     }
 }

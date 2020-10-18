@@ -80,7 +80,7 @@ namespace TakeGithubAPITest
             #endregion
 
             #region .: Act :.
-            var result = await _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganizationAsync(organizationName, language, numberOfRepositories);
+            var result = await _githubRepoService.GetGithubRepositoriesByOrganizationFilteredOrderedByFirstCreatedAsync(organizationName, language, numberOfRepositories);
             #endregion
             #region .: Assert :.
 
@@ -105,7 +105,7 @@ namespace TakeGithubAPITest
             #endregion
 
             #region .: Act :.
-            Task result () => _githubRepoService.GetNFirstCreatedGithubRepositoriesByLanguageAndOrganizationAsync(organizationName, language, numberOfRepositories);
+            Task result () => _githubRepoService.GetGithubRepositoriesByOrganizationFilteredOrderedByFirstCreatedAsync(organizationName, language, numberOfRepositories);
             #endregion
             #region .: Assert :.
 
