@@ -17,8 +17,10 @@ namespace TakeGithubAPI.DTO
             Description = githubRepo.Description;
             Owner = new OwnerDTO(githubRepo.Owner);
             LanguageName = githubRepo.LanguageName;
+            FullName = githubRepo.FullName;
         }
         public string Name { get; set; }
+        public string FullName { get; set; }
         public string Description { get; set; }
         public OwnerDTO Owner { get; set; }
         public string LanguageName { get; set; }

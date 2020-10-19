@@ -11,6 +11,8 @@ namespace TakeGithubAPI.Models
     public class GithubRepo
     {
         public string Name { get; set; }
+        [JsonPropertyName("full_name")]
+        public string FullName { get; set; }
         public string Description { get; set; }
         public Owner Owner { get; set; }
         [JsonPropertyName("created_at")]
