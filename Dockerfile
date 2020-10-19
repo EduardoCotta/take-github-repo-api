@@ -21,3 +21,5 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "TakeGithubAPI.dll"]
 ENV ASPNETCORE_URLS=http://*:8080
+ENV GITHUB-API-REPOS-BASE-URL=http://api.github.com/users/ORGANIZATION_NAME/repos?per_page=100
+ENV GithubPersonalToken=423d9b446275c9d8787ac9a65ea7343a7582c3d7
