@@ -131,13 +131,6 @@ namespace TakeGithubAPITest
                 new GithubRepo
                 {
                     Owner = TakeOwnerBuilder(),
-                    Name = "Rep1",
-                    LanguageName = "C#",
-                    CreationDate = DateTime.Now.AddDays(-4)
-                },
-                new GithubRepo
-                {
-                    Owner = TakeOwnerBuilder(),
                     Name = "Rep3",
                     LanguageName = "C#",
                     CreationDate = DateTime.Now.AddDays(-1)
@@ -153,6 +146,13 @@ namespace TakeGithubAPITest
                     Owner = TakeOwnerBuilder(),
                     Name = "Rep5",
                     LanguageName = "Javascript"
+                },
+                new GithubRepo
+                {
+                    Owner = TakeOwnerBuilder(),
+                    Name = "Rep1",
+                    LanguageName = "C#",
+                    CreationDate = DateTime.Now.AddDays(-365)
                 },
             };
         }
